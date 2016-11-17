@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var mongoose=require('mongoose');
 
 var app = express();
 
@@ -31,11 +32,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', users);*/
 routes(app);
 
+//连接数据库
+mongoose.connect('mongodb://localhost:27018/db',function(err){
+			if(err){
+				console.log('打开数据库失败')
+			}
+});
+
+
+
+
 app.listen(app.get('port'),function(){
 	
 	console.log('port'+app.get('port'))
 	
 })
+
+
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

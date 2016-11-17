@@ -1,9 +1,27 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  color: #00B7FF;
+
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
-a {
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
+}
+.clearfix:after{
+	display: block;
+	content: '';
+	clear: both;	
+}
+.clearfix{
+	zoom: 1;
+}
+
+.bheader a {
   color: #00B7FF;
+  text-decoration: none;
+}
+.bheader ul li{
+	float: left;
 }
