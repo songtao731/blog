@@ -1,16 +1,41 @@
 var User = require('../models/user.js');
+var crypto=require('crypto');
+
+function checkLogin(req,res,next){
+	 if(!req.session.user){
+	 	res.redirect('/login')
+	 }
+	 next();
+}
+function checkNotLogin(req,res,next){
+	if(req.session.user){
+		res.redirect('back')
+	}
+	next();
+}
+
+
+
 
 module.exports = function(app) {
+	
 	app.get('/', function(req, res, next) {
+		console.log(req.session.user)
 		res.render('index', {
-			title: '主页'
+			title: '主页',
+			user:req.session.user			
 		});
 	});
+	
+	app.get('/reg',checkNotLogin);
 	app.get('/reg', function(req, res, next) {
 		res.render('reg', {
-			title: '注册'
+			title: '注册',
+			user:req.session.user
 		})
 	});
+	
+	app.post('/reg',checkNotLogin);
 	app.post('/reg', function(req, res, next) {
 		var name = req.body.name,
 			password = req.body.password,
@@ -71,6 +96,7 @@ module.exports = function(app) {
 			}
 			newUser.save(function(err, user) {
 				
+				req.session.user=user;
 				res.json({
 					code: 10000,
 					info: '注册成功'
@@ -81,23 +107,54 @@ module.exports = function(app) {
 		})
 
 	});
+	
+	app.get('/login',checkNotLogin);
 	app.get('/login', function(req, res, next) {
 		res.render('login', {
-			title: '登陆'
+			title: '登陆',
+			user:req.session.user
 		})
 	});
-	app.get('/login', function(req, res, next) {
+	
+	app.post('/login',checkNotLogin);
+	app.post('/login', function(req, res, next) {
+		var password=crypto.createHash('md5').update(req.body.password.toLowerCase()).digest('hex');
+		 User.get(req.body.name,function(err,user){		 	
+		 	 if(!user||user.password!=password||user.name!=req.body.name){
+		 	 	res.json({
+		 	 		code:10001,
+		 	 		info:'账号或者密码错误'
+		 	 	})
+		 	 }else{
+		 	 	req.session.user=user;
+		 	 	res.json({
+		 	 		code:10000,
+		 	 		info:'登陆成功'
+		 	 	})
+		 	 	
+		 	 }
+		 	
+		 })
+		
+		
 
 	});
 	app.get('/post', function(req, res, next) {
+		console.log(req.session.user)
 		res.render('post', {
-			title: '发表'
+			title: '发表',
+			user:req.session.user
 		})
 	});
 	app.post('/post', function(req, res, next) {
 
 	});
+	
+	app.get('/logout',checkLogin);
 	app.get('/logout', function(req, res, next) {
+		req.session.user=null;
+		res.redirect('/')
+	
 
 	});
 

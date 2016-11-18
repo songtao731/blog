@@ -12,14 +12,36 @@ $(function() {
 				email: $('.regemail').val()
 			},
 			success: function(data) {
-                if(data.code=='10000'){
-                	location.href='http://localhost:3000/login';
-                }else{
-                	$('.reerror').html(data.info)
-                }
+				if(data.code == '10000') {
+					location.href = 'http://localhost:3000/login';
+				} else {
+					$('.reerror').html(data.info)
+				}
 			}
 
 		});
+	});
+	$('.login').click(function() {
+
+		$.ajax({
+			type: 'post',
+			url: '/login',
+			data: {
+				name: $('.logname').val(),
+				password: $('.logpd').val()
+			},
+			success: function(data) {
+				if(data.code==10000){
+					location.href='http://localhost:3000';
+					
+				}else{
+					$('.logerror').html(data.info)
+				}
+
+			}
+
+		});
+
 	})
 
 })

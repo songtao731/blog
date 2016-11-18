@@ -9,6 +9,10 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var mongoose=require('mongoose');
 
+var session=require('express-session');
+var MongoStore=require('connect-mongo')(session);
+
+
 var app = express();
 
 //设置路由
@@ -25,6 +29,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(session({
+	 secret:'blog',
+	 cookie:{maxAge:1000*60*60*24*7*30},
+	 db:new MongoStore({
+	 	db:'blog',
+	 	host:'localhost',
+	 	port:'27018'	 	
+	 })
+}))
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -53,17 +68,17 @@ app.listen(app.get('port'),function(){
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
+});*/
 
 // error handlers
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+/*if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -72,16 +87,16 @@ if (app.get('env') === 'development') {
     });
   });
 }
-
+*/
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+/*app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
     error: {}
   });
-});
+});*/
 
 
-module.exports = app;
+/*module.exports = app;*/
