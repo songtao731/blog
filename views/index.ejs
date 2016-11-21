@@ -1,4 +1,33 @@
 
+
+
  	<%- include header %>
-  	这是主页
+  <div>
+  	<h3>标题</h3>
+  	<p>
+  		<span>作者:</span><span>11</span>
+  	</p>
+  	<p>
+  		<span>日期:</span><span>222</span>
+  	</p>
+  	<p>
+  		内容
+  	</p>
+  </div>
+  	
   	<%- include footer %>
+  	
+<script>
+	
+	
+	$.ajax({
+		type:"get",
+		url:"/api/getAll",
+		async:true,
+		success:function(data){
+			console.log(data)
+			
+		}
+		
+	});
+</script>

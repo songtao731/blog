@@ -11,6 +11,7 @@ var mongoose=require('mongoose');
 
 var session=require('express-session');
 var MongoStore=require('connect-mongo')(session);
+var ejs=require('ejs');
 
 
 var app = express();
@@ -22,6 +23,7 @@ app.set('port',process.env.PORT || '3000');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -50,7 +52,7 @@ routes(app);
 //连接数据库
 mongoose.connect('mongodb://localhost:27018/db',function(err){
 			if(err){
-				console.log('打开数据库失败')
+				console.log('打开数据库失败');
 			}
 });
 

@@ -31,7 +31,7 @@ User.prototype.save=function(callback){
 	 	if(err){
 	 		return callback(err);
 	 	}
-	 	callback(null,user);
+	  	callback(null,user);
 	 		 	
 	 });		
 };
@@ -41,7 +41,7 @@ User.get=function(name,callback){
 		if(err){
 			return callback(err)
 		}
-		callback(null,user);
+		 callback(null,user);
 		
 	});	
 };

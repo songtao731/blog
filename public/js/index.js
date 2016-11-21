@@ -43,5 +43,23 @@ $(function() {
 		});
 
 	})
+	
+	$('.postbtn').click(function(){
+		$.ajax({
+			type:"post",
+			url:"/post",
+			async:true,
+			data:{
+				title:$('.posttitle').val(),
+				post:$('.posttext').val()
+			},
+			success:function(data){
+				
+				console.log(data)
+				
+			}
+		});	
+	});
+	
 
 })
