@@ -16,28 +16,23 @@ function checkNotLogin(req, res, next) {
 	next();
 }
 
-//api
-function checkApi(req, res, next) {
-	if(!req.session.name) {
-		res.redirect('/login')
-	}
-	next();
-}
 
 
 module.exports = function(app) {
+	//主页
 	app.get('/', function(req, res, next) {
-		console.log(req.session.user)
+	
 		if(!req.session.user) {
 			return res.redirect('/login');
 
-		}
+		};
 		res.render('index', {
 			title: '主页',
 			user: req.session.user
 		});
 
 	});
+	//注册
 	app.get('/reg', checkNotLogin);
 	app.get('/reg', function(req, res, next) {
 		res.render('reg', {
@@ -117,7 +112,7 @@ module.exports = function(app) {
 		})
 
 	});
-
+   //登陆
 	app.get('/login', checkNotLogin);
 	app.get('/login', function(req, res, next) {
 		res.render('login', {
@@ -147,6 +142,7 @@ module.exports = function(app) {
 		})
 
 	});
+	//发表
 	app.get('/post', function(req, res, next) {
 		res.render('post', {
 			title: '发表',
@@ -155,27 +151,25 @@ module.exports = function(app) {
 
 	});
 	app.post('/post', checkLogin);
-	app.post('/post', function(req, res, next) {
-		var postname = req.session.user,
-
-			post = new Post(postname.name, req.body.title, req.body.post);
-
+	app.post('/post', function(req,res,next) {
+		var postname = req.session.user;		
+		if(req.files.pupload){			
+		var post= new Post(postname.name, req.body.title, req.body.post,req.files.pupload.path);
+		}else{				
+		var	post= new Post(postname.name, req.body.title, req.body.post);
+		}
 		post.save(function(err) {
-			console.log(1111)
 			if(err) {
 				return res.json({
 					code: 10001,
 					info: '发表失败'
 				})
 			};
-			res.json({
-				code: 10000,
-				info: '发表成功'
-			})
+			res.redirect('/')
 		})
 
 	});
-
+	//退出
 	app.get('/logout', checkLogin);
 	app.get('/logout', function(req, res, next) {
 		req.session.user = null;
@@ -183,12 +177,31 @@ module.exports = function(app) {
 
 	});
 	
+		//上传功能
+	app.get('/upload',checkLogin);
+	app.get('/upload',function(req,res,next){
+		res.render('upload',{
+			title:'文件上传',
+			user:req.session.user			
+			
+		})	
+	});
+	app.post('/upload',function(req,res,next){
+		var a={};
+		a.text=req.body.text;
+		for(var i in req.files){
+			a[i]=req.files[i].path;
+			
+		}
+		res.json(a)
 	
+		//res.redirect('/');
+	});
 	
-	
-	app.get(/\/api\/.*/,checkApi);	
+	//获取文章列表
+	app.get(/\/api\/w+/,checkLogin);	
 	app.get('/api/getAll',function(req, res, next){		
-		Post.get(req.session.user.name, function(err, user) {
+		Post.getAll(req.session.user.name, function(err, user) {
 			if(err) {
 				return res.json({
 					code: 10001,
@@ -198,10 +211,57 @@ module.exports = function(app) {
 			return	res.json(user);
 		})
 	});
-
+	
+	/*	app.get('/api/:name',function(req,res){
+		Post.getAll(req.params.name,function(err,posts){
+			if(!posts){
+				return res.redirect('/');
+			}
+			return	res.json(posts)
+					
+		})		
+	});*/
+	
+	app.get(/\/u\/\w+/,checkLogin);		
+	app.get('/u/:name',function(req,res){
+		res.render('user',{
+				title:req.params.title,
+				user:req.session.user
+				
+		})
+		
+	});
+	app.get(/\/api\/\w+/,function(req, res, next){	
+		Post.getAll(req.session.user.name, function(err, user) {
+			if(err) {
+				return res.json({
+					code: 10001,
+					info: '获取失败'
+				})
+			}
+			return	res.json(user);
+		})
+	});
 	
 	
+	
+	app.get('/u/:name/:day/:title',function(req,res){
+		Post.getOne(req.params.name,req.paramsday,req.params.title,function(err,post){
+			if(err){
+				return res.redirect
+			}
+			res.render('article',{
+				title:req.params.title,
+				post:post,
+				user:req.session.user
+				
+			})
+			
+		})
+		
+	})
 	
 	
 
 };
+	

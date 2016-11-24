@@ -1,22 +1,25 @@
 var mongoose=require('mongoose');
 
-function Post(name,title,post){
+function Post(name,title,post,url){
 	this.name=name;
 	this.title=title;
 	this.post=post;	
+	this.url=url;
 }
 
 
 var postschema=new mongoose.Schema({
 	name:String,
 	title:String,
-	post:String	
+	post:String,
+	time:String,
+	url:String
 })
 
 var postmodel=mongoose.model('Post',postschema); 
 
-Post.get=function(name,callback){	
-  postmodel.findOne({name:name},function(err,user){
+Post.getAll=function(name,callback){	
+  postmodel.find({name:name},function(err,user){
   	 if(err){
   	 	return callback(err)
   	 }
@@ -26,18 +29,19 @@ Post.get=function(name,callback){
 Post.prototype.save=function(callback){	
 
 	var date=new Date(),time;
-	time=date.getFullYear()+'-'+date.getMonth()+'-'+date.getDay()+'-'+date.getHours()+'-'+date.getHours()+'-'+date.getSeconds()+'-'+date.getMinutes();	
+	time=date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDay()+' '+date.getHours()+':'+date.getSeconds()+':'+date.getMinutes();	
 	var post={
 		name:this.name,
 		title:this.title,
 		post:this.post,
-		time:time
+		time:time,
+		url:this.url
 	};
-	console.log(post,33333333333)
+
 	var newpost=new postmodel(post);
 	
 	newpost.save(function (err,user){
-	
+		console.log(user)
 		if(err){
 			return callback(err)
 		}

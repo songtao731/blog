@@ -1,13 +1,20 @@
 
 
 <%- include header %>
-<form action="" method="post">
+<form action="/post" method="post"  enctype="multipart/form-data" id="bb">
 	<ul>
-		<li><span>标题</span><input type="text" name="" id="" value="" class="posttitle" /></li>
-		<li><span>正文</span><textarea name="" rows="20" cols="100" class="posttext"></textarea></li>
+		<li><span>标题</span><input type="text" name="title" id="" value="" class="posttitle" /></li>
+		<li><span>正文</span><textarea name="post" rows="20" cols="100" class="posttext" style="vertical-align: top;"></textarea></li>
+		<li><span></span><input type="file" name="pupload" id="" value="上传" class="postupload" /></li>
 	</ul>	
-	<input type="button" value="发表" class="postbtn"/>
+	<input type="button" id="aa" value="aa" />
+	<input type="submit" value="发表" class="postbtn" bclick='1'  style="display: block;"/>
 </form>
+<script type="text/javascript">
 
+	
+	
+	
+</script>
 <%- include footer %>
 

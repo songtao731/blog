@@ -31,10 +31,11 @@ $(function() {
 				password: $('.logpd').val()
 			},
 			success: function(data) {
-				if(data.code==10000){
-					location.href='http://localhost:3000';
-					
-				}else{
+				if(data.code == 10000) {
+					sessionStorage.name=$('.logname').val();
+					location.href = 'http://localhost:3000';
+
+				} else {
 					$('.logerror').html(data.info)
 				}
 
@@ -42,24 +43,43 @@ $(function() {
 
 		});
 
-	})
-	
-	$('.postbtn').click(function(){
-		$.ajax({
-			type:"post",
-			url:"/post",
-			async:true,
-			data:{
-				title:$('.posttitle').val(),
-				post:$('.posttext').val()
-			},
-			success:function(data){
-				
-				console.log(data)
-				
-			}
-		});	
 	});
-	
+	$('.tlist').click(function(){		
+		location.href='/u/'+sessionStorage.name;
+		
+	})
 
-})
+	$('.postbtn2222').click(function() {	
+		if($('.postbtn').attr('bclick')==1) {
+				$('.postbtn').attr('bclick', 2);
+			$.ajax({
+				type: "post",
+				url: "/post",
+				async: true,
+				data: {
+					title: $('.posttitle').val(),
+					post: $('.posttext').val()
+				},
+				success: function(data) {
+					$('.postbtn').attr('bclick', 1);
+					location.href = 'http://localhost:3000';
+				}
+			});
+
+		}
+
+	});
+
+});
+function addzero(str) {
+	var str = str.replace(/((\d{4})-(\d{1,2})-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2}))/, function(e, $1, $2, $3, $4,$5,$6,$7) {
+		$2=$2.length>1?$2:'0'+$2;
+		$3=$3.length>1?$3:'0'+$3;
+		$4=$4.length>1?$4:'0'+$4;
+		$5=$5.length>1?$5:'0'+$5;
+		$6=$6.length>1?$6:'0'+$6;
+		$7=$7.length>1?$7:'0'+$7;
+		return $2+'-'+$3+'-'+$4+' '+$5+':'+$7+':'+$6
+	})
+	return str
+}
