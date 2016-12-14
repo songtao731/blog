@@ -49,26 +49,6 @@ $(function() {
 		
 	})
 
-	$('.postbtn2222').click(function() {	
-		if($('.postbtn').attr('bclick')==1) {
-				$('.postbtn').attr('bclick', 2);
-			$.ajax({
-				type: "post",
-				url: "/post",
-				async: true,
-				data: {
-					title: $('.posttitle').val(),
-					post: $('.posttext').val()
-				},
-				success: function(data) {
-					$('.postbtn').attr('bclick', 1);
-					location.href = 'http://localhost:3000';
-				}
-			});
-
-		}
-
-	});
 
 });
 function addzero(str) {

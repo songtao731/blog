@@ -1,6 +1,8 @@
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var crypto = require('crypto');
+var ccap=require('ccap');
+
 
 function checkLogin(req, res, next) {
 	if(!req.session.user) {
@@ -35,11 +37,18 @@ module.exports = function(app) {
 	//注册
 	app.get('/reg', checkNotLogin);
 	app.get('/reg', function(req, res, next) {
+	 
 		res.render('reg', {
 			title: '注册',
 			user: req.session.user
 		})
 	});
+	app.get('/regcode',function(req,res,next){
+		var b=ccap();		
+		var a=b.get();
+		req.session.img=a[0];
+		res.send(a[1]);
+	});	
 
 	app.post('/reg', checkNotLogin);
 	app.post('/reg', function(req, res, next) {

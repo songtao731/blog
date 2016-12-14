@@ -1,7 +1,7 @@
 <%- include header%>
 <div class="usertext">
 	<div>
-	<h3>标题</h3>
+	<h3><span>标题</span></h3>
 	<p>
 		<span>作者:</span><span>11</span>
 	</p>
@@ -22,10 +22,11 @@
 			async: true,
 			success: function(data) {
 				data.reverse();
+				var a=5
 				var str='';
 				for(var i=0;i<data.length;i++){
 					if(data[i].url){
-						str+='<div class="maintitle"><h3><span>标题</span><span>' + data[i].title + '</span></h3>\
+						str+='<div class="maintitle"><h3><span>标题</span><a href="/u/'+data[i].time+data[i].title+'">' + data[i].title + '</a></h3>\
 			<p><span>作者:</span><span>' + data[i].name + '</span>\
 			</p>\<p><span>日期:</span><span>' + addzero(data[i].time) + '</span></p>\
 			<p>' + data[i].post + '</p>\
@@ -33,7 +34,7 @@
 			</div>'
 						
 					}else{
-						str+='<div class="maintitle"><h3><span>标题</span><span>' + data[i].title + '</span></h3>\
+						str+='<div class="maintitle"><h3><span>标题</span><a href="/u/'+data[i].time+data[i].title+'">' + data[i].title + '</a></h3>\
 			<p><span>作者:</span><span>' + data[i].name + '</span>\
 			</p>\<p><span>日期:</span><span>' + addzero(data[i].time) + '</span></p>\
 			<p>' + data[i].post + '</p>\

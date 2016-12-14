@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node-dev --debug app.js"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
+    "ccap": "^0.6.10",
     "connect-mongo": "~0.4.1",
     "cookie-parser": "~1.4.3",
     "crypto": "^0.0.3",

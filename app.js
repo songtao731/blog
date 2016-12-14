@@ -54,8 +54,6 @@ app.use(multer({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-/*app.use('/', routes);
-app.use('/users', users);*/
 routes(app);
 
 //连接数据库
